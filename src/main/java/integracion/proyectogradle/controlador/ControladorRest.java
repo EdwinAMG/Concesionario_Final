@@ -42,4 +42,6 @@ public class ControladorRest {
         return categoriaService.save(actual);
     }
 
+    //ejemplo
+
 }
