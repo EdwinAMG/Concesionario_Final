@@ -9,9 +9,9 @@ public class Cliente implements Serializable {
     private Long id_persona;
 
     @Column
-    private double compras;
+    private int compras;
     @Column
-    private double tipo;
+    private String tipo;
 
     public Long getId_persona() {
         return id_persona;
@@ -21,17 +21,19 @@ public class Cliente implements Serializable {
         this.id_persona = id_persona;
     }
 
-    public double getCompras() {
+    public int getCompras() {
         return compras;
     }
 
-    public void setCompras(double compras) {
+    public void setCompras(int compras) {
         this.compras = compras;
     }
-    public double getTipo() {
-        return compras;
+
+    public String getTipo() {
+        return tipo;
     }
-    public void setTipo(double tipo) {
+
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
 }

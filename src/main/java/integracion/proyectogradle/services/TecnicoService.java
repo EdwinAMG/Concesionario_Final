@@ -30,8 +30,8 @@ public class TecnicoService implements ITecnicoService{
     }
 
     @Override
-    public Tecnico save(Tecnico a) {
-        return tecnicoDao.save(a);
+    public Tecnico save(Tecnico t) {
+        return tecnicoDao.save(t);
     }
 
 }
