@@ -288,4 +288,104 @@ public class ControladorRest {
         return usadoService.save(changeVehiclesUsed);
     }
 
+    //---VENTA---//
+    @Autowired
+    private IVentaService ventaService;
+
+    @GetMapping("/ventas")
+    public List<Venta> findAllSales(){
+        return ventaService.findAll();
+    }
+
+    @GetMapping("/ventas/{id}")
+    public Venta findByIdSale(@PathVariable Long id){
+        return ventaService.findById(id).orElse(null);
+    }
+
+    @GetMapping("ventas/mayorValor") //Ventas que superan los de 200M
+    public List<Venta> findGreater200MSales() {
+        List<Venta> salesGreater = new ArrayList<Venta>();
+        for (Venta v: ventaService.findAll()){
+            if(v.getValor()>250000000)
+                salesGreater.add(findByIdSale(v.getId_venta()));
+        } return salesGreater;
+    }
+
+    @DeleteMapping("ventas/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSales(@PathVariable Long id){
+        ventaService.delete(id);
+    }
+
+    @PostMapping("/ventas")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Venta createSales(@RequestBody Venta venta){
+        return ventaService.save(venta);
+    }
+
+    @PutMapping("/ventas/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Venta updateSales(@PathVariable Long id, @RequestBody Venta venta) {
+        Venta changeSales=ventaService.findById(id).orElse(null);
+        changeSales.setAsesor_id_persona(venta.getAsesor_id_persona());
+        changeSales.setCliente_id_persona(venta.getCliente_id_persona());
+        changeSales.setNuevo_id_vehiculo(venta.getNuevo_id_vehiculo());
+        changeSales.setFecha(venta.getFecha());
+        changeSales.setTipotransaccion(venta.getTipotransaccion());
+        changeSales.setCuotas(venta.getCuotas());
+        changeSales.setValor(venta.getValor());
+        changeSales.setEstado(venta.getEstado());
+        return ventaService.save(changeSales);
+    }
+
+    //---SERVICIO---//
+    @Autowired
+    private IServicioService servicioService;
+
+    @GetMapping("/servicios")
+    public List<Servicio> findAllServices(){
+        return servicioService.findAll();
+    }
+
+    @GetMapping("/servicios/{id}")
+    public Servicio findByIdService(@PathVariable Long id){
+        return servicioService.findById(id).orElse(null);
+    }
+
+    @GetMapping("servicios/mayorValor") //Ventas que superan los de 2M
+    public List<Servicio> findGreater2MServices() {
+        List<Servicio> servicesGreater = new ArrayList<Servicio>();
+        for (Servicio s: servicioService.findAll()){
+            if(s.getValorservicio()>2000000)
+                servicesGreater.add(findByIdService(s.getId_servicio()));
+        } return servicesGreater;
+    }
+
+    @DeleteMapping("servicios/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteServices(@PathVariable Long id){
+        servicioService.delete(id);
+    }
+
+    @PostMapping("/servicios")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Servicio createServices(@RequestBody Servicio servicio){
+        return servicioService.save(servicio);
+    }
+
+    @PutMapping("/servicios/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Servicio updateServices(@PathVariable Long id, @RequestBody Servicio servicio) {
+        Servicio changeServices=servicioService.findById(id).orElse(null);
+        changeServices.setUsado_id_vehiculo(servicio.getUsado_id_vehiculo());
+        changeServices.setCliente_id_persona(servicio.getCliente_id_persona());
+        changeServices.setTecnico_id_persona(servicio.getTecnico_id_persona());
+        changeServices.setFechainicio(servicio.getFechainicio());
+        changeServices.setFechafinalizacion(servicio.getFechafinalizacion());
+        changeServices.setTiposervicio(servicio.getTiposervicio());
+        changeServices.setValorservicio(servicio.getValorservicio());
+        changeServices.setObservaciones(servicio.getObservaciones());
+        return servicioService.save(changeServices);
+    }
+
 }
