@@ -12,7 +12,7 @@ public interface ITecnicoService {
 
     public void delete(Long id);
 
-    public Tecnico save(Tecnico a);
+    public Tecnico save(Tecnico t);
 
 
 }

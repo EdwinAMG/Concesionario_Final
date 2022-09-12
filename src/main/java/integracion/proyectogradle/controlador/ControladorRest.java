@@ -1,9 +1,6 @@
 package integracion.proyectogradle.controlador;
 
-import integracion.proyectogradle.entity.Asesor;
-import integracion.proyectogradle.entity.Cliente;
-import integracion.proyectogradle.entity.Persona;
-import integracion.proyectogradle.entity.Tecnico;
+import integracion.proyectogradle.entity.*;
 import integracion.proyectogradle.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,14 +12,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/concesionario")
 public class ControladorRest {
+    //---PERSONAS---//
+    @Autowired
+    private IPersonaService personaService;
     @Autowired
     private IAsesorService asesorService;
     @Autowired
     private ITecnicoService tecnicoService;
     @Autowired
     private IClienteService clienteService;
-    @Autowired
-    private IPersonaService personaService;
 
     @GetMapping("/personas")
     public List<Persona> findAllPerson(){
@@ -165,6 +163,43 @@ public class ControladorRest {
         changeClients.setCompras(cliente.getCompras());
         changeClients.setTipo(cliente.getTipo());
         return clienteService.save(changeClients);
+    }
+
+    //---VEHICULOS---//
+    @Autowired
+    private IVehiculoService vehiculoService;
+
+    @GetMapping("/vehiculos")
+    public List<Vehiculo> finaAllVehiculos(){
+        return vehiculoService.findAll();
+    }
+
+    @GetMapping("/vehiculos/{id}")
+    public Vehiculo findByIdVehiculo(@PathVariable Long id){
+        return vehiculoService.findById(id).orElse(null);
+    }
+
+    @DeleteMapping("vehiculos/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteVehicles(@PathVariable Long id){
+        vehiculoService.delete(id);
+    }
+
+    @PostMapping("/vehiculos")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Vehiculo createVehicles(@RequestBody Vehiculo vehiculo){
+        return vehiculoService.save(vehiculo);
+    }
+
+    @PutMapping("/vehiculos/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Vehiculo updateClients(@PathVariable Long id, @RequestBody Vehiculo vehiculo) {
+        Vehiculo changeVehicles=vehiculoService.findById(id).orElse(null);
+        changeVehicles.setMatricula(vehiculo.getMatricula());
+        changeVehicles.setMarca(vehiculo.getMarca());
+        changeVehicles.setModelo(vehiculo.getModelo());
+        changeVehicles.setVehiculo_type(vehiculo.getVehiculo_type());
+        return vehiculoService.save(changeVehicles);
     }
 
 }

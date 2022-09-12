@@ -12,6 +12,6 @@ public interface IPersonaService {
 
     public void delete(Long id);
 
-    public Persona save(Persona a);
+    public Persona save(Persona p);
 
 }
