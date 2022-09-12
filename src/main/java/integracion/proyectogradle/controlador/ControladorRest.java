@@ -45,7 +45,7 @@ public class ControladorRest {
         return tecnicoService.findById(id).orElse(null);
     }
     @GetMapping("/clientes/{id}")
-    public Tecnico findByIdClients(@PathVariable Long id){
+    public Cliente findByIdClients(@PathVariable Long id){
         return clienteService.findById(id).orElse(null);
     }
 
