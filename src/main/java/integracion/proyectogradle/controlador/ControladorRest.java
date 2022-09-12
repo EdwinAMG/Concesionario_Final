@@ -1,7 +1,9 @@
 package integracion.proyectogradle.controlador;
 
 import integracion.proyectogradle.entity.Asesor;
+import integracion.proyectogradle.entity.Tecnico;
 import integracion.proyectogradle.services.IAsesorService;
+import integracion.proyectogradle.services.ITecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -14,48 +16,87 @@ import java.util.List;
 public class ControladorRest {
     @Autowired
     private IAsesorService asesorService;
+    @Autowired
+    private ITecnicoService tecnicoService;
 
     @GetMapping("/asesores")
-    public List<Asesor> findAll(){
+    public List<Asesor> findAllAdvisers(){
         return asesorService.findAll();
+    }
+    @GetMapping("/tecnicos")
+    public List<Tecnico> findAllTechnicians(){
+        return tecnicoService.findAll();
+    }
+
+    @GetMapping("/asesores/{id}")
+    public Asesor findByIdAdvisers(@PathVariable Long id){
+        return asesorService.findById(id).orElse(null);
+    }
+    @GetMapping("/tecnicos/{id}")
+    public Tecnico findByIdTechnicians(@PathVariable Long id){
+        return tecnicoService.findById(id).orElse(null);
     }
 
     @GetMapping("/asesores/mayorSal") //Asesores que ganan más de 2000000
-    public List<Asesor> findGreaterThat2M() {
-        List<Asesor> asesors = new ArrayList<Asesor>();
+    public List<Asesor> findGreater2MAdvisers() {
+        List<Asesor> advisers = new ArrayList<Asesor>();
         for (Asesor a: asesorService.findAll()){
             if(a.getSalario()>2000000)
-                asesors.add(findById(a.getId_persona()));
+                advisers.add(findByIdAdvisers(a.getId_persona()));
         }
-        return asesors;
+        return advisers;
     }
-
-    @GetMapping("/asesores/{id}") //permite encontrar registros por un atributo de la entidad (en este caso categoría) suministrado por parámetro
-    public Asesor findById(@PathVariable Long id){
-        return asesorService.findById(id).orElse(null);
+    @GetMapping("/tecnicos/mayorSal") //Tecnicos que ganan más de 2000000
+    public List<Tecnico> findGreater2MTechnicians() {
+        List<Tecnico> technicians = new ArrayList<Tecnico>();
+        for (Tecnico t: tecnicoService.findAll()){
+            if(t.getSalario()>2000000)
+                technicians.add(findByIdTechnicians(t.getId_persona()));
+        }
+        return technicians;
     }
 
     @DeleteMapping("asesores/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable Long id){
+    public void deleteAdvisers(@PathVariable Long id){
         asesorService.delete(id);
+    }
+    @DeleteMapping("tecnicos/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTechnicians(@PathVariable Long id){
+        tecnicoService.delete(id);
     }
 
     @PostMapping("/asesores")
     @ResponseStatus(HttpStatus.CREATED)
-    public Asesor create(@RequestBody Asesor asesor){
+    public Asesor createAdvisers(@RequestBody Asesor asesor){
         return asesorService.save(asesor);
+    }
+    @PostMapping("/tecnicos")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Tecnico createTechnicians(@RequestBody Tecnico tecnico){
+        return tecnicoService.save(tecnico);
     }
 
     @PutMapping("/asesores/{id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public Asesor update(@PathVariable Long id, @RequestBody Asesor asesor) {
-        Asesor cambiar=asesorService.findById(id).orElse(null);
-        cambiar.setComision(asesor.getComision());
-        cambiar.setGestionesactivas(asesor.getGestionesactivas());
-        cambiar.setGestionescompletadas(asesor.getGestionescompletadas());
-        cambiar.setSalario(asesor.getSalario());
-        return asesorService.save(cambiar);
+    public Asesor updateAdvisers(@PathVariable Long id, @RequestBody Asesor asesor) {
+        Asesor changeAdvisers=asesorService.findById(id).orElse(null);
+        changeAdvisers.setComision(asesor.getComision());
+        changeAdvisers.setGestionesactivas(asesor.getGestionesactivas());
+        changeAdvisers.setGestionescompletadas(asesor.getGestionescompletadas());
+        changeAdvisers.setSalario(asesor.getSalario());
+        return asesorService.save(changeAdvisers);
+    }
+    @PutMapping("/tecnicos/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Tecnico updateTechnicians(@PathVariable Long id, @RequestBody Tecnico tecnico) {
+        Tecnico changeTechnicians=tecnicoService.findById(id).orElse(null);
+        changeTechnicians.setEspecialidad(tecnico.getEspecialidad());
+        changeTechnicians.setExperiencia(tecnico.getExperiencia());
+        changeTechnicians.setSalario(tecnico.getSalario());
+        changeTechnicians.setVehiculosreparados(tecnico.getVehiculosreparados());
+        return tecnicoService.save(changeTechnicians);
     }
 
 }
