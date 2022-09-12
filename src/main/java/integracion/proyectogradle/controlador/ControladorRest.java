@@ -4,6 +4,7 @@ import integracion.proyectogradle.entity.Asesor;
 import integracion.proyectogradle.entity.Cliente;
 import integracion.proyectogradle.entity.Tecnico;
 import integracion.proyectogradle.services.IAsesorService;
+import integracion.proyectogradle.services.IClienteService;
 import integracion.proyectogradle.services.ITecnicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,7 +22,7 @@ public class ControladorRest {
     private ITecnicoService tecnicoService;
 
     @Autowired
-    private ITecnicoService clienteService;
+    private IClienteService clienteService;
 
     @GetMapping("/asesores")
     public List<Asesor> findAllAdvisers(){
